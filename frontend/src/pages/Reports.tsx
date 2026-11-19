@@ -1,0 +1,1 @@
+export default function Reports() { return <><div className="page-heading"><div><p className="eyebrow">DOCUMENTS</p><h1>Reports</h1></div></div><section className="panel empty-page"><h2>Inspection reports</h2><p>Generate and download PDF or CSV reports.</p></section></> }

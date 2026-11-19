@@ -1,0 +1,1 @@
+export default function Analytics() { return <><div className="page-heading"><div><p className="eyebrow">TRENDS</p><h1>Analytics</h1></div></div><section className="panel empty-page"><h2>Quality analytics</h2><p>Defect trends and production line performance.</p></section></> }

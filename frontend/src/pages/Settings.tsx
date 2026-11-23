@@ -1,1 +1,10 @@
-export default function Settings() { return <><div className="page-heading"><div><p className="eyebrow">SYSTEM</p><h1>Settings</h1></div></div><section className="panel empty-page"><h2>Configuration</h2><p>Manage users, roles, thresholds, and system preferences.</p></section></> }
+export default function Settings() {
+  return (
+    <div>
+      <h1 className="text-2xl font-bold">Settings</h1>
+      <p className="text-slate-500 mt-2">
+        Manage your application preferences.
+      </p>
+    </div>
+  );
+}

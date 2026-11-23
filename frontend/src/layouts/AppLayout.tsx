@@ -1,19 +1,47 @@
-import { Bell, Search } from 'lucide-react'
-import { Outlet } from 'react-router-dom'
-import { Sidebar } from '../components/Sidebar'
 
-export function AppLayout() {
+import { Outlet } from "react-router-dom";
+import { Bell, UserCircle } from "lucide-react";
+import Sidebar from "../components/Sidebar";
+
+export default function AppLayout() {
   return (
-    <div className="app-shell">
+    <div className="flex min-h-screen bg-slate-50">
+
       <Sidebar />
-      <main className="main-area">
-        <header className="topbar">
-          <div className="search-box"><Search size={18} /><input aria-label="Search" placeholder="Search inspections..." /></div>
-          <button className="icon-button" aria-label="Notifications"><Bell size={19} /><span className="notification-dot" /></button>
-          <div className="top-avatar">AR</div>
+
+      <div className="flex-1 min-w-0">
+
+        {/* Header */}
+        <header className="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between">
+
+          <div>
+            <p className="text-sm text-slate-500">
+              InspectAI / Workspace
+            </p>
+          </div>
+
+          <div className="flex items-center gap-5">
+            <button className="text-slate-500 hover:text-blue-600">
+              <Bell size={21} />
+            </button>
+
+            <div className="flex items-center gap-2">
+              <UserCircle size={30} className="text-slate-500" />
+              <div>
+                <p className="text-sm font-semibold">Admin User</p>
+                <p className="text-xs text-slate-500">Administrator</p>
+              </div>
+            </div>
+          </div>
+
         </header>
-        <div className="page-content"><Outlet /></div>
-      </main>
+
+        {/* Page content */}
+        <main className="p-8">
+          <Outlet />
+        </main>
+
+      </div>
     </div>
-  )
+  );
 }

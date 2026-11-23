@@ -1,64 +1,205 @@
-import { AlertTriangle, CheckCircle2, ClipboardCheck, Plus, TrendingUp } from 'lucide-react'
-import { Area, AreaChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { Link } from 'react-router-dom'
-import { StatCard } from '../components/StatCard'
 
-const volume = [
-  { name: 'Mon', value: 118 }, { name: 'Tue', value: 132 }, { name: 'Wed', value: 126 },
-  { name: 'Thu', value: 168 }, { name: 'Fri', value: 151 }, { name: 'Sat', value: 188 }, { name: 'Sun', value: 177 },
-]
-const defects = [
-  { name: 'Scratch', value: 38, color: '#4f46e5' }, { name: 'Pitting', value: 27, color: '#8b5cf6' },
-  { name: 'Corrosion', value: 21, color: '#fb923c' }, { name: 'Crack', value: 14, color: '#ef4444' },
-]
-const inspections = [
-  { id: '#INSP-2847', product: 'Bearing Housing', line: 'Line A', status: 'Passed', defects: 0, time: '10:42 AM' },
-  { id: '#INSP-2846', product: 'Valve Body', line: 'Line C', status: 'Failed', defects: 3, time: '10:28 AM' },
-  { id: '#INSP-2845', product: 'Drive Shaft', line: 'Line B', status: 'Review', defects: 2, time: '10:15 AM' },
-  { id: '#INSP-2844', product: 'Pump Cover', line: 'Line A', status: 'Passed', defects: 0, time: '09:58 AM' },
-]
+import {
+  ScanSearch,
+  CheckCircle,
+  AlertTriangle,
+  Percent,
+} from "lucide-react";
+
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+import StatCard from "../components/StatCard";
+
+const inspectionData = [
+  { day: "Mon", inspections: 45 },
+  { day: "Tue", inspections: 62 },
+  { day: "Wed", inspections: 55 },
+  { day: "Thu", inspections: 78 },
+  { day: "Fri", inspections: 90 },
+  { day: "Sat", inspections: 65 },
+  { day: "Sun", inspections: 40 },
+];
+
+const recentInspections = [
+  {
+    id: "INS-1001",
+    product: "Metal Sheet A",
+    defects: 2,
+    status: "Failed",
+    date: "19 Nov 2026",
+  },
+  {
+    id: "INS-1002",
+    product: "Metal Sheet B",
+    defects: 0,
+    status: "Passed",
+    date: "19 Nov 2026",
+  },
+  {
+    id: "INS-1003",
+    product: "Metal Sheet C",
+    defects: 1,
+    status: "Review",
+    date: "18 Nov 2026",
+  },
+];
 
 export default function Dashboard() {
   return (
-    <>
-      <div className="page-heading">
-        <div><p className="eyebrow">OVERVIEW</p><h1>Dashboard</h1></div>
-        <Link className="primary-button" to="/new-inspection"><Plus size={18} /> New Inspection</Link>
+    <div className="space-y-8">
+
+      {/* Page heading */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">
+            Dashboard
+          </h1>
+
+          <p className="text-slate-500 mt-1">
+            Monitor your product quality inspections.
+          </p>
+        </div>
+
+        <span className="text-sm bg-blue-50 text-blue-700 px-4 py-2 rounded-lg">
+          AI Inspection System
+        </span>
       </div>
-      <div className="stats-grid">
-        <StatCard title="Total Inspections" value="1,284" change="+12.5% vs last week" icon={ClipboardCheck} tone="blue" />
-        <StatCard title="Pass Rate" value="94.8%" change="+2.1% vs last week" icon={CheckCircle2} tone="green" />
-        <StatCard title="Defects Found" value="67" change="-8.3% vs last week" icon={AlertTriangle} tone="orange" />
-        <StatCard title="Avg. Confidence" value="98.2%" change="+1.4% vs last week" icon={TrendingUp} tone="violet" />
+
+      {/* Statistics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+
+        <StatCard
+          title="Total Inspections"
+          value="1,250"
+          description="All recorded inspections"
+          icon={ScanSearch}
+        />
+
+        <StatCard
+          title="Passed Products"
+          value="1,040"
+          description="83.2% of inspected products"
+          icon={CheckCircle}
+        />
+
+        <StatCard
+          title="Defective Products"
+          value="210"
+          description="Require quality review"
+          icon={AlertTriangle}
+        />
+
+        <StatCard
+          title="Defect Rate"
+          value="16.8%"
+          description="Across inspected products"
+          icon={Percent}
+        />
+
       </div>
-      <div className="charts-grid">
-        <section className="panel volume-panel">
-          <div className="panel-heading"><div><h2>Inspection Volume</h2><p>Last 7 days</p></div><button>7 days⌄</button></div>
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={volume} margin={{ top: 10, right: 10, bottom: 0, left: -20 }}>
-                <defs><linearGradient id="volumeFill" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#6366f1" stopOpacity={0.18}/><stop offset="95%" stopColor="#6366f1" stopOpacity={0}/></linearGradient></defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#edf0f5" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#8b93a7', fontSize: 12 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#8b93a7', fontSize: 12 }} />
-                <Tooltip />
-                <Area type="monotone" dataKey="value" stroke="#6366f1" strokeWidth={3} fill="url(#volumeFill)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-        <section className="panel defect-panel">
-          <div className="panel-heading"><div><h2>Defect Distribution</h2><p>This week</p></div></div>
-          <div className="donut-layout">
-            <div className="donut"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={defects} dataKey="value" innerRadius={55} outerRadius={78} paddingAngle={3} stroke="none">{defects.map((d) => <Cell key={d.name} fill={d.color}/>)}</Pie></PieChart></ResponsiveContainer><div className="donut-center"><strong>67</strong><span>defects</span></div></div>
-            <div className="legend">{defects.map(d => <div key={d.name}><span><i style={{background:d.color}} />{d.name}</span><strong>{d.value}%</strong></div>)}</div>
-          </div>
-        </section>
+
+      {/* Chart */}
+      <div className="bg-white border border-slate-200 rounded-xl p-6">
+
+        <h2 className="text-lg font-semibold text-slate-900">
+          Inspection Overview
+        </h2>
+
+        <p className="text-sm text-slate-500 mb-6">
+          Number of inspections per day
+        </p>
+
+        <div className="h-72">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={inspectionData}>
+
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+              />
+
+              <XAxis dataKey="day" />
+              <YAxis />
+
+              <Tooltip />
+
+              <Bar
+                dataKey="inspections"
+                fill="#2563eb"
+                radius={[6, 6, 0, 0]}
+              />
+
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
       </div>
-      <section className="panel recent-panel">
-        <div className="panel-heading"><div><h2>Recent Inspections</h2><p>Latest activity across all production lines</p></div><Link to="/inspections">View all <span>→</span></Link></div>
-        <div className="table-wrap"><table><thead><tr><th>Inspection ID</th><th>Product</th><th>Line</th><th>Defects</th><th>Status</th><th>Time</th></tr></thead><tbody>{inspections.map(row => <tr key={row.id}><td><strong>{row.id}</strong></td><td>{row.product}</td><td>{row.line}</td><td>{row.defects}</td><td><span className={`status ${row.status.toLowerCase()}`}><i />{row.status}</span></td><td>{row.time}</td></tr>)}</tbody></table></div>
-      </section>
-    </>
-  )
+
+      {/* Recent inspections */}
+      <div className="bg-white border border-slate-200 rounded-xl p-6">
+
+        <h2 className="text-lg font-semibold mb-5">
+          Recent Inspections
+        </h2>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+
+            <thead className="text-slate-500 border-b">
+              <tr>
+                <th className="py-3">Inspection ID</th>
+                <th>Product</th>
+                <th>Defects</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {recentInspections.map((item) => (
+                <tr key={item.id} className="border-b last:border-0">
+
+                  <td className="py-4 font-medium">
+                    {item.id}
+                  </td>
+
+                  <td>{item.product}</td>
+
+                  <td>{item.defects}</td>
+
+                  <td>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        item.status === "Passed"
+                          ? "bg-green-100 text-green-700"
+                          : item.status === "Failed"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-amber-100 text-amber-700"
+                      }`}
+                    >
+                      {item.status}
+                    </span>
+                  </td>
+
+                  <td>{item.date}</td>
+
+                </tr>
+              ))}
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  );
 }
